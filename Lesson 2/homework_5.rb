@@ -19,3 +19,5 @@ else
     year.each{ |m, d| day += d if m <= month - 1 }
     day += date 
 end
+
+puts day 
