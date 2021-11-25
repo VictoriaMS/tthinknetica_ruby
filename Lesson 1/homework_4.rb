@@ -1,7 +1,7 @@
-puts "Enter three numbers"
-a = gets.chomp.to_i
-b = gets.chomp.to_i
-c = gets.chomp.to_i 
+puts 'Enter three numbers'
+a = gets.chomp.to_f
+b = gets.chomp.to_f
+c = gets.chomp.to_f 
 
 discriminant = b ** 2 - (4 * a * c)
 

@@ -1,9 +1,9 @@
-puts "base of triangle = "
-base = gets.chomp.to_i
+puts 'base of triangle = '
+base = gets.chomp.to_f
 
-puts "height of triangle = "
-height = gets.chomp.to_i
+puts 'height of triangle = '
+height = gets.chomp.to_f
 
-s = base * height / 2
+area = base * height / 2
 
-puts "The area of the triangle = #{s}"
+puts "The area of the triangle = #{area}"
