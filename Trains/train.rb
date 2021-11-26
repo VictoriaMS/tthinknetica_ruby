@@ -1,18 +1,17 @@
 class Train 
-  attr_accessor :speed, :count_wagons, :route, :station_index
-  attr_reader :type 
+  attr_accessor :speed, :wagons, :route, :station_index
+  attr_reader :type, :number
   @@trains = []
 
   def self.all
     @@trains
   end
-  attr_accessor :speed, :wagons, :route
-  attr_reader :number
 
   def initialize(number)
     @number = number 
-    @wagons = []
+    @vagons = []
     @speed = 0
+    @route = nil
     @@trains << self
   end 
   
@@ -33,7 +32,7 @@ class Train
   end 
   
   def unhook_wagon(wagon)
-    if speed.zero? && count_wagons != 0
+    if speed.zero? && wagons.count != 0
       wagons.delete(wagon)
     else 
       puts 'you cannot unhook a wagon while the train is moving'

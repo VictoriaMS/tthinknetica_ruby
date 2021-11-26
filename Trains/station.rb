@@ -7,7 +7,6 @@ class Station
 
   attr_accessor :trains, :name
 
-
   def initialize(name)
     @name = name 
     @trains = []
