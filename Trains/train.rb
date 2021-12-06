@@ -1,14 +1,36 @@
 class Train 
-  attr_accessor :speed, :count_vagons, :route
-  attr_reader :type 
+  include ManufactureCompany
+  include InstanceCounter
 
-  def initialize(number, type, count_vagons)
+  FORMAT_NUMBER = /^\w{3}(-)?\w{2}$/
+
+  @@trains = []
+
+  def self.all
+    @@trains
+  end
+
+  def self.find(number)
+    @@trains.select{|train| train.number == number}[0]
+  end
+
+  attr_accessor :speed, :vagons, :route, :number
+
+  def initialize(number)
     @number = number 
-    @type = type 
-    @count_vagons = count_vagons
+    @vagons = []
     @speed = 0
     @route = nil
+    @@trains << self
+    validate!
+    register_instance
   end 
+
+  def valid?
+    validate!
+  rescue
+    false
+  end
   
   def pick_up_speed
     self.speed += 10 
@@ -18,17 +40,17 @@ class Train
     self.speed = 0
   end
   
-  def attach_vagon 
+  def attach_vagon(vagon) 
     if speed == 0 
-      self.count_vagons += 1
+      vagons << vagon
     else 
       puts 'you cannot attach a vagon while the train is moving'
     end
   end 
   
-  def unhook_vagon
+  def unhook_vagon(vagon)
     if speed == 0 
-      self.count_vagons -= 1
+      vagons.delete(vagon)
     else 
       puts 'you cannot unhook a vagon while the train is moving'
     end
@@ -64,7 +86,15 @@ class Train
     station.send_train(self)
   end
 
-  private 
+  protected
+
+  def validate! 
+    raise 'The number must be 6 characters long' if number.length < 5
+    raise 'The number does not match the format' if number !~ FORMAT_NUMBER
+    true
+  end
+
+  #этот метод не нужен для управления поезда
 
   def index_current_station
     route.stations.index(current_station)
