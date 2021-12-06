@@ -2,6 +2,8 @@ class Train
   include ManufactureCompany
   include InstanceCounter
 
+  FORMAT_NUMBER = /^\w{3}(-)?\w{2}$/
+
   @@trains = []
 
   def self.all
@@ -12,8 +14,7 @@ class Train
     @@trains.select{|train| train.number == number}[0]
   end
 
-  attr_accessor :speed, :vagons, :route
-  attr_reader :number
+  attr_accessor :speed, :vagons, :route, :number
 
   def initialize(number)
     @number = number 
@@ -21,8 +22,15 @@ class Train
     @speed = 0
     @route = nil
     @@trains << self
+    validate!
     register_instance
   end 
+
+  def valid?
+    validate!
+  rescue
+    false
+  end
   
   def pick_up_speed
     self.speed += 10 
@@ -78,7 +86,13 @@ class Train
     station.send_train(self)
   end
 
-  private 
+  protected
+
+  def validate! 
+    raise 'The number must be 6 characters long' if number.length < 5
+    raise 'The number does not match the format' if number !~ FORMAT_NUMBER
+    true
+  end
 
   #этот метод не нужен для управления поезда
 

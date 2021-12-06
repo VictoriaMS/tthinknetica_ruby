@@ -12,7 +12,14 @@ class Station
     @name = name 
     @trains = []
     @@stations << self
+    validate!
   end
+
+  def valid?
+    validate! 
+  rescue 
+    false
+  end 
 
   def all_trains
     trains
@@ -29,5 +36,13 @@ class Station
   def accept_train(train)
     trains.push(train)
   end 
+
+  private
+
+  def validate!
+    raise 'Station name must be letters' if name.class != String  
+    raise 'Station name too short' if name.length < 3 
+    true
+  end
 
 end

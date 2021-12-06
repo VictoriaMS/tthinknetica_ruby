@@ -34,12 +34,18 @@ loop do
   when 2 
     puts '1. Create passenger train'
     puts '2. Create cargo train'
-    type_train = gets.chomp.to_i 
+    type_train = gets.chomp.to_s
+    
+    begin
+      puts 'Enter train number'
+      number_train = gets.chomp
 
-    puts 'Enter train number'
-    number_train = gets.chomp
-
-    type_train == 1 ? PassengerTrain.new(number_train) : CargoTrain.new(number_train)
+      type_train == 1 ? PassengerTrain.new(number_train) : CargoTrain.new(number_train)
+      puts 'Train created'
+    rescue RuntimeError => e 
+      puts e.message
+      retry
+    end
   when 3 
     puts 'Choose first station'
     first_station = choose_station
