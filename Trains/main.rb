@@ -1,3 +1,5 @@
+require_relative 'instance_counter'
+require_relative 'manufacture_company'
 require_relative 'train'
 require_relative 'station'
 require_relative 'route'
@@ -119,7 +121,7 @@ loop do
   def choose_station 
     list_stations
     index = gets.chomp.to_i 
-    Station.all_stations[index - 1]
+    Station.all[index - 1]
   end 
 
   def choose_route
@@ -141,19 +143,19 @@ loop do
   end
 
   def list_stations
-    Station.all_stations.each_with_index{ |station, index| puts "#{index + 1}. #{station.name}"}
+    Station.all.each_with_index{ |station, index| puts "#{index + 1}. #{station.name}"}
   end
  
   def list_routes
-    Route.routes.each_with_index{ |route, index| puts "#{index + 1}. #{route.stations.first.name} - #{route.stations.last.name}" } 
+    Route.all.each_with_index{ |route, index| puts "#{index + 1}. #{route.stations.first.name} - #{route.stations.last.name}" } 
   end
 
   def list_tarins
-    Train.trains.each_with_index{ |train, index| puts "#{index + 1}. Train with number: #{train.number}" }
+    Train.all.each_with_index{ |train, index| puts "#{index + 1}. Train with number: #{train.number}" }
   end
 
   def list_vagons 
-    Vagon.vagons.each_with_index{ |vagon, index| puts "#{index + 1}. #{vagon} "}
+    Vagon.all.each_with_index{ |vagon, index| puts "#{index + 1}. #{vagon} "}
   end
 end
 
