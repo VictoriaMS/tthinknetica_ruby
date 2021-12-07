@@ -1,7 +1,7 @@
 class Route 
   @@routes = []
 
-  def self.routes
+  def self.all
     @@routes
   end
 

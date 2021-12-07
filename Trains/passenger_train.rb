@@ -1,9 +1,9 @@
 class PassengerTrain < Train
-  def attach_vagon(vagon) 
-    if vagon.class == PassengerVagon
-      super(vagon)
+  def attach_wagon(wagon) 
+    if wagon.class == PassengerWagon
+      super(wagon)
     else
-      puts 'Vagon is not passenger'
+      puts 'Wagon is not passenger'
     end
   end 
 end

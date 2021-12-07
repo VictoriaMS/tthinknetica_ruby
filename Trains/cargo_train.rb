@@ -1,9 +1,9 @@
 class CargoTrain < Train
-  def attach_vagon(vagon) 
-    if vagon.class == CargoVagon
-       super(vagon)
+  def attach_wagon(wagon) 
+    if wagon.class == CargoWagon
+       super(wagon)
     else
-      puts 'Vagon is not cargo'
+      puts 'Wagon is not cargo'
     end
   end 
 end
