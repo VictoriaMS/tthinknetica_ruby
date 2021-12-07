@@ -11,8 +11,8 @@ class Station
   def initialize(name)
     @name = name 
     @trains = []
-    @@stations << self
     validate!
+    @@stations << self
   end
 
   def valid?
@@ -36,6 +36,10 @@ class Station
   def accept_train(train)
     trains.push(train)
   end 
+
+  def each_train(&block)
+    trains.each{|train| yield(train)}
+  end
 
   private
 

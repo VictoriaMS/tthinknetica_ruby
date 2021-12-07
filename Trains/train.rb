@@ -14,15 +14,15 @@ class Train
     @@trains.select{|train| train.number == number}[0]
   end
 
-  attr_accessor :speed, :vagons, :route, :number
+  attr_accessor :speed, :wagons, :route, :number
 
   def initialize(number)
     @number = number 
-    @vagons = []
+    @wagons = []
     @speed = 0
     @route = nil
-    @@trains << self
     validate!
+    @@trains << self
     register_instance
   end 
 
@@ -32,6 +32,10 @@ class Train
     false
   end
   
+  def each_wagon(&block)
+    wagons.each{|wagon| yield(wagon)}
+  end
+
   def pick_up_speed
     self.speed += 10 
   end
@@ -40,19 +44,19 @@ class Train
     self.speed = 0
   end
   
-  def attach_vagon(vagon) 
-    if speed == 0 
-      vagons << vagon
+  def attach_wagon(wagon) 
+    if speed.zero? 
+      wagons << wagon
     else 
-      puts 'you cannot attach a vagon while the train is moving'
+      puts 'you cannot attach a wagon while the train is moving'
     end
   end 
   
-  def unhook_vagon(vagon)
+  def unhook_wagon(wagon)
     if speed == 0 
-      vagons.delete(vagon)
+      wagons.delete(wagon)
     else 
-      puts 'you cannot unhook a vagon while the train is moving'
+      puts 'you cannot unhook a wagon while the train is moving'
     end
   end 
    

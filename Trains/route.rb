@@ -9,8 +9,8 @@ class Route
 
   def initialize(first_station, last_station)
     @stations = [first_station, last_station]
-    @@routes << self
     validate!
+    @@routes << self
   end
 
   def valid?

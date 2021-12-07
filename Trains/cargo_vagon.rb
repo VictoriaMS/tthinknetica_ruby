@@ -1,2 +1,0 @@
-class CargoVagon < Vagon
-end
