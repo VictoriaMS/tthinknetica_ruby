@@ -21,10 +21,6 @@ class Station
     false
   end 
 
-  def all_trains
-    trains
-  end 
-
   def trains_of_type(type)
     trains.map{|train| train.class == type }
   end 
@@ -44,7 +40,6 @@ class Station
   private
 
   def validate!
-    raise 'Station name must be letters' if name.class != String  
     raise 'Station name too short' if name.length < 3 
     true
   end

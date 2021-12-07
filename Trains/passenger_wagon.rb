@@ -5,7 +5,15 @@ class PassengerWagon < Wagon
   def initialize(places)
     super()
     @places = places
+    validate!
     @occupied_places = 0 
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
   
   def take_the_place
@@ -14,6 +22,10 @@ class PassengerWagon < Wagon
 
   def free_places
     places - occupied_places
+  end
+
+  def validate! 
+    raise 'Places can not be zero' if places.zero?
   end
 
 end 

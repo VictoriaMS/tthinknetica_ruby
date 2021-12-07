@@ -27,10 +27,6 @@ class Route
     stations.delete(station)
   end
 
-  def list_station
-    @stations
-  end 
-
   private 
   def validate! 
     raise 'No such station exists' if stations.first.class != Station || stations.last.class != Station

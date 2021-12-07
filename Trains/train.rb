@@ -20,7 +20,6 @@ class Train
     @number = number 
     @wagons = []
     @speed = 0
-    @route = nil
     validate!
     @@trains << self
     register_instance
@@ -45,19 +44,11 @@ class Train
   end
   
   def attach_wagon(wagon) 
-    if speed.zero? 
-      wagons << wagon
-    else 
-      puts 'you cannot attach a wagon while the train is moving'
-    end
+    wagons << wagon if speed.zero?
   end 
   
   def unhook_wagon(wagon)
-    if speed == 0 
-      wagons.delete(wagon)
-    else 
-      puts 'you cannot unhook a wagon while the train is moving'
-    end
+    wagons.delete(wagon) if speed.zero? && wagons.size != 0 
   end 
    
   def route=(route)
@@ -93,7 +84,6 @@ class Train
   protected
 
   def validate! 
-    raise 'The number must be 6 characters long' if number.length < 5
     raise 'The number does not match the format' if number !~ FORMAT_NUMBER
     true
   end
