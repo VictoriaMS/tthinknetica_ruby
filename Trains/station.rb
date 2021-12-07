@@ -10,12 +10,8 @@ class Station
     trains.push(train)
   end 
 
-  def all_trains
-    trains
-  end 
-
   def trains_of_type(type)
-    trains.map{|train| train.type == type }
+    trains.select{|train| train.type == type }
   end 
 
   def send_train(train)
