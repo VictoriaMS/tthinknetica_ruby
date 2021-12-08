@@ -1,19 +1,18 @@
 require_relative 'instance_counter'
 require_relative 'manufacture_company'
 
-class Wagon 
-include ManufactureCompany
-include InstanceCounter
+class Wagon
+  include ManufactureCompany
+  include InstanceCounter
 
   @@wagons = []
 
   def self.all
-    @@wagons 
-  end 
+    @@wagons
+  end
 
-  def initialize 
+  def initialize
     @@wagons << self
     register_instance
   end
-
 end

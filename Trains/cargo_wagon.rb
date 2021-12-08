@@ -6,13 +6,13 @@ class CargoWagon < Wagon
     super()
     @volume = volume
     validate!
-    @filled_volume = 0 
+    @filled_volume = 0
   end
 
   def valid?
     validate!
     true
-  rescue 
+  rescue StandardError
     false
   end
 
@@ -29,5 +29,4 @@ class CargoWagon < Wagon
   def validate!
     raise 'Volume can not be zero' if valome.zero?
   end
-
 end

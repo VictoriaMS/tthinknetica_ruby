@@ -1,4 +1,4 @@
-class Train 
+class Train
   include ManufactureCompany
   include InstanceCounter
 
@@ -11,65 +11,64 @@ class Train
   end
 
   def self.find(number)
-    @@trains.select{|train| train.number == number}[0]
+    @@trains.select { |train| train.number == number }[0]
   end
 
   attr_accessor :speed, :wagons, :route, :number
 
   def initialize(number)
-    @number = number 
+    @number = number
     @wagons = []
     @speed = 0
     validate!
     @@trains << self
     register_instance
-  end 
+  end
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
-  
-  def each_wagon(&block)
-    wagons.each{|wagon| yield(wagon)}
+
+  def each_wagon
+    wagons.each(&block)
   end
 
   def pick_up_speed
-    self.speed += 10 
+    self.speed += 10
   end
 
-  def stop 
+  def stop
     self.speed = 0
   end
-  
-  def attach_wagon(wagon) 
+
+  def attach_wagon(wagon)
     wagons << wagon if speed.zero?
-  end 
-  
+  end
+
   def unhook_wagon(wagon)
-    wagons.delete(wagon) if speed.zero? && wagons.size != 0 
-  end 
-   
+    wagons.delete(wagon) if speed.zero? && !wagons.emty?
+  end
+
   def route=(route)
-    @route = route 
+    @route = route
     route.stations.first.accept_train(self)
   end
 
   def current_station
-    route.stations.select{ |station| station.trains.include?(self) }[0]
+    route.stations.find { |station| station.trains.include?(self) }
   end
-  
-  def next_station 
-  index_current_station + 1 >= route.stations.size ? route.stations[0] : route.stations[index_current_station + 1]
 
-  end 
-  
+  def next_station
+    index_current_station + 1 >= route.stations.size ? route.stations[0] : route.stations[index_current_station + 1]
+  end
+
   def previous_station
-    route.stations[index_current_station- 1]
-  end 
-  
-  def moving_forward 
+    route.stations[index_current_station - 1]
+  end
+
+  def moving_forward
     station = current_station
     next_station.accept_train(self)
     station.send_train(self)
@@ -83,15 +82,15 @@ class Train
 
   protected
 
-  def validate! 
+  def validate!
     raise 'The number does not match the format' if number !~ FORMAT_NUMBER
+
     true
   end
 
-  #этот метод не нужен для управления поезда
+  # этот метод не нужен для управления поезда
 
   def index_current_station
     route.stations.index(current_station)
-  end 
-
-end 
+  end
+end

@@ -1,4 +1,4 @@
-class Route 
+class Route
   @@routes = []
 
   def self.all
@@ -15,8 +15,8 @@ class Route
 
   def valid?
     validate!
-  rescue 
-    false 
+  rescue StandardError
+    false
   end
 
   def add_station(station)
@@ -27,9 +27,11 @@ class Route
     stations.delete(station)
   end
 
-  private 
-  def validate! 
+  private
+
+  def validate!
     raise 'No such station exists' if stations.first.class != Station || stations.last.class != Station
+
     true
   end
 end

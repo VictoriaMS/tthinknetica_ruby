@@ -7,41 +7,40 @@ class Station
 
   attr_accessor :trains, :name
 
-
   def initialize(name)
-    @name = name 
+    @name = name
     @trains = []
     validate!
     @@stations << self
   end
 
   def valid?
-    validate! 
-  rescue 
+    validate!
+  rescue StandardError
     false
-  end 
+  end
 
   def trains_of_type(type)
-    trains.map{|train| train.class == type }
-  end 
+    trains.map { |train| train.instance_of?(type) }
+  end
 
   def send_train(train)
     trains.delete(train)
-  end 
+  end
 
   def accept_train(train)
     trains.push(train)
-  end 
+  end
 
-  def each_train(&block)
-    trains.each{|train| yield(train)}
+  def each_train
+    trains.each(&block)
   end
 
   private
 
   def validate!
-    raise 'Station name too short' if name.length < 3 
+    raise 'Station name too short' if name.length < 3
+
     true
   end
-
 end

@@ -6,26 +6,25 @@ class PassengerWagon < Wagon
     super()
     @places = places
     validate!
-    @occupied_places = 0 
+    @occupied_places = 0
   end
 
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
-  
+
   def take_the_place
     self.occupied_places += 1
-  end  
+  end
 
   def free_places
     places - occupied_places
   end
 
-  def validate! 
+  def validate!
     raise 'Places can not be zero' if places.zero?
   end
-
-end 
+end

@@ -1,13 +1,4 @@
-require_relative 'instance_counter'
-require_relative 'manufacture_company'
-require_relative 'train'
-require_relative 'station'
-require_relative 'route'
-require_relative 'wagon'
-require_relative 'cargo_train'
-require_relative 'cargo_wagon'
-require_relative 'passenger_wagon'
-require_relative 'passenger_train'
+require_relative 'requirable'
 
 loop do
   puts '1. Create station'
@@ -26,45 +17,43 @@ loop do
 
   input = gets.chomp.to_i
 
-  break if input == 0
+  break if input.zero?
 
-  case input 
-  when 1 
-    create_station 
-  when 2 
-    create_train 
-  when 3 
+  case input
+  when 1
+    create_station
+  when 2
+    create_train
+  when 3
     create_route
-  when 4 
+  when 4
     create_wagon
-  when 5 
+  when 5
     change_route
-  when 6 
+  when 6
     assign_route
   when 7
     change_wagons_of train
-  when 8 
+  when 8
     move_train
   when 9
     list_stations
   when 10
     trains_on_station
-  when 11 
+  when 11
     wagons_of_train
-  when 12 
+  when 12
     change_volume_wagons
   end
 
-
-
-  def create_station 
+  def create_station
     puts 'Enter station name'
     station_name = gets.chomp
     Station.new(station_name)
   rescue RuntimeError => e
     puts e.message
     retry
-  end 
+  end
 
   def create_train
     puts '1. Create passenger train'
@@ -76,9 +65,9 @@ loop do
 
     type_train == 1 ? PassengerTrain.new(number_train) : CargoTrain.new(number_train)
     puts 'Train created'
-  rescue RuntimeError => e 
+  rescue RuntimeError => e
     puts e.message
-    retry  
+    retry
   end
 
   def create_route
@@ -96,10 +85,10 @@ loop do
     puts '2. Create cargo wagon'
     type_wagon = gets.chomp.to_i
 
-    if type_wagon == 1 
+    if type_wagon == 1
       puts 'Enter number of available places '
       PassengerWagon.new(gets.chomp.to_i)
-    else 
+    else
       puts 'Enter volume'
       CargoWagon.new(gets.chomp.to_i)
     end
@@ -115,11 +104,11 @@ loop do
     puts '2. Delete a station'
     input = gets.chomp.to_i
 
-    if input == 1 
+    if input == 1
       route.add_station(choose_station)
-    else 
+    else
       puts 'Choose station'
-      route.stations.each_with_index{ |station, index| puts "#{index + 1}. #{station.name}" }
+      route.stations.each_with_index { |station, index| puts "#{index + 1}. #{station.name}" }
       station = route.stations[gets.chomp.to_i - 1]
       route.delete_station(station)
     end
@@ -128,7 +117,7 @@ loop do
   def assign_route
     train = choose_train
     route = choose_route
-    
+
     train.route = route
   end
 
@@ -138,11 +127,11 @@ loop do
     puts '1. Attach_wagon'
     puts '2. Unhook wagon'
     input = gets.chomp.to_i
-    
-    if input == 1 
+
+    if input == 1
       train.attach_wagon(choose_wagon)
-    else 
-      train.wagons.each_with_index{|wagon, index| puts "#{index - 1}. #{wagon}"}
+    else
+      train.wagons.each_with_index { |wagon, index| puts "#{index - 1}. #{wagon}" }
       wagon = train.wagons[gets.chomp.to_i - 1]
       train.unhook_wagon(wagon)
     end
@@ -160,11 +149,11 @@ loop do
 
   def trains_on_station
     station = choose_station
-    
+
     station.each_train do |train|
-      if train.class == PassengerTrain
+      if train.is_a?(PassengerTrain)
         puts "Number: #{train.number}, type: passenger, wagons: #{train.wagons.size}"
-      else 
+      else
         puts "Number: #{train.number}, type: cargo, wagons: #{train.wagons.size}"
       end
     end
@@ -175,11 +164,11 @@ loop do
 
     train.each_wagon do |wagon|
       number = train.wagons.index(wagon) + 1
-      if wagon.class == PassengerWagon
-        puts "Number: #{number}, type: passenger, 
-             free places: #{wagon.free_places}, 
+      if wagon.is_a?(PassengerWagon)
+        puts "Number: #{number}, type: passenger,
+             free places: #{wagon.free_places},
              occupied places: #{wagon.occupied_places}"
-      else 
+      else
         puts "Number: #{number}, type: cargo,
              free volume: #{wagon.free_volume},
              filled_volume: #{wagon.filled_volume}"
@@ -190,20 +179,20 @@ loop do
   def change_volume_wagons
     wagon = choose_wagon
 
-    if wagon.class == PassengerWagon
+    if wagon.is_a?(PassengerWagon)
       wagon.take_the_place
-    else 
-      puts'How much volume to fill?'
+    else
+      puts 'How much volume to fill?'
       wagon.fill_the_volume(gets.chomp.to_i)
     end
   end
 
-  def choose_station 
+  def choose_station
     puts 'Choose station'
     list_stations
-    index = gets.chomp.to_i 
+    index = gets.chomp.to_i
     Station.all[index - 1]
-  end 
+  end
 
   def choose_route
     puts 'Choose route'
@@ -222,24 +211,25 @@ loop do
   def choose_wagon
     puts 'Choose wagon'
     list_wagons
-    index = gets.chomp.to_i 
+    index = gets.chomp.to_i
     Wagon.all[index - 1]
   end
 
   def list_stations
-    Station.all.each.with_index{ |station, index| puts "#{index + 1}. #{station.name}"}
+    Station.all.each.with_index { |station, index| puts "#{index + 1}. #{station.name}" }
   end
- 
+
   def list_routes
-    Route.all.each.with_index{ |route, index| puts "#{index + 1}. #{route.stations.first.name} - #{route.stations.last.name}" } 
+    Route.all.each.with_index do |route, index|
+      puts "#{index + 1}. #{route.stations.first.name} - #{route.stations.last.name}"
+    end
   end
 
   def list_trains
-    Train.all.each.with_index{ |train, index| puts "#{index + 1}. Train with number: #{train.number}" }
+    Train.all.each.with_index { |train, index| puts "#{index + 1}. Train with number: #{train.number}" }
   end
 
-  def list_wagons 
-    Wagon.all.each.with_index{ |wagon, index| puts "#{index + 1}. #{wagon} "}
+  def list_wagons
+    Wagon.all.each.with_index { |wagon, index| puts "#{index + 1}. #{wagon} " }
   end
 end
-
