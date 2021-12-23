@@ -1,23 +1,22 @@
 class Station
+include Validation
+
   @@stations = []
 
   def self.all
     @@stations
   end
-
+  
   attr_accessor :trains, :name
+
+  validate :name, :presence
+  validate :name, :type, String
 
   def initialize(name)
     @name = name
     @trains = []
     validate!
     @@stations << self
-  end
-
-  def valid?
-    validate!
-  rescue StandardError
-    false
   end
 
   def trains_of_type(type)
@@ -34,13 +33,5 @@ class Station
 
   def each_train
     trains.each(&block)
-  end
-
-  private
-
-  def validate!
-    raise 'Station name too short' if name.length < 3
-
-    true
   end
 end

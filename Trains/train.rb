@@ -1,6 +1,5 @@
 class Train
-  include ManufactureCompany
-  include InstanceCounter
+include Validation
 
   FORMAT_NUMBER = /^\w{3}(-)?\w{2}$/
 
@@ -16,19 +15,14 @@ class Train
 
   attr_accessor :speed, :wagons, :route, :number
 
+  validate :number, :format, FORMAT_NUMBER
+
   def initialize(number)
     @number = number
     @wagons = []
     @speed = 0
     validate!
     @@trains << self
-    register_instance
-  end
-
-  def valid?
-    validate!
-  rescue StandardError
-    false
   end
 
   def each_wagon
@@ -81,12 +75,6 @@ class Train
   end
 
   protected
-
-  def validate!
-    raise 'The number does not match the format' if number !~ FORMAT_NUMBER
-
-    true
-  end
 
   # этот метод не нужен для управления поезда
 
