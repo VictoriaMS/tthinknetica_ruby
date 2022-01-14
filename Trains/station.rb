@@ -25,5 +25,4 @@ class Station
   def accept_train(train)
     trains.push(train)
   end 
-
 end

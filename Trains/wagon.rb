@@ -8,5 +8,4 @@ class Wagon
   def initialize 
     @@wagons << self
   end
-
 end
