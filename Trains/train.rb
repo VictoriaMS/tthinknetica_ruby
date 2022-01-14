@@ -1,10 +1,18 @@
 class Train 
+  include ManufactureCompany
+  include InstanceCounter
+
   attr_accessor :speed, :wagons, :route, :station_index
   attr_reader :type, :number
+
   @@trains = []
 
   def self.all
     @@trains
+  end
+
+  def self.find(number)
+    @@trains.select{|train| train.number == number}[0]
   end
 
   def initialize(number)
@@ -13,6 +21,7 @@ class Train
     @speed = 0
     @route = nil
     @@trains << self
+    register_instance
   end 
   
   def pick_up_speed
